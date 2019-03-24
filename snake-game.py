@@ -23,7 +23,7 @@ class Menu():
         #   coordinates (x, y)  , text,  (color1),     (color2), number
         self.menu()
 
-    #анимация выбора кнопки
+    #button animation
     def render(self, screen, font, button_number):
         for i in self.buttons:
             if button_number == i[5]:
@@ -182,7 +182,6 @@ class Snake():
                                       self.snake_body[size - 1][1] - tail_dir2])
 
     def draw(self, play_surface, surface_color):
-        """Отображаем все сегменты змеи"""
         self.play_surface.fill(surface_color)
         for pos in self.snake_body:
             pygame.draw.rect(play_surface, self.color,
@@ -192,7 +191,6 @@ class Snake():
         if (self.snake_body[0] == food.position):
             self.grow()
             game.score += 1
-            print("You score is:" , game.score)
             food.add(fake_food, self)
             while (food.position in self.snake_body):
                 food.position = [random.randrange(WIN_WIDTH / 10) * 10,
@@ -214,16 +212,12 @@ class Snake():
 
         #generate fake_food:
         wellnes = random.randrange(0, 100)
-        #print(ver)
-        print(self.snake_body[0][0] - food.position[0])
-        print(self.snake_body[0][1] - food.position[1])
         if ((-80 < self.snake_body[0][0] - food.position[0] < 80) and
             (-80 < self.snake_body[0][1] - food.position[1] < 80) and
             not (-4 < self.snake_body[0][0] - food.position[0] < 4) and
             not (-4 < self.snake_body[0][1] - food.position[1] < 4) and
                 wellnes == 1 and game.score > 3):
             fake_food.position.append(food.position)
-            print("fake_food")
             food.add(fake_food, self)
 
         return True
@@ -236,7 +230,6 @@ class Food():
         self.size_y = 10
         self.position = [random.randrange(WIN_WIDTH/10)*10,
                          random.randrange(WIN_HEIGHT/10)*10]
-        print(self.position)
 
     def add(self, fake_food, snake):
         self.position = [random.randrange(WIN_WIDTH / 10) * 10,
