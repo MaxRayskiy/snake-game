@@ -1,4 +1,4 @@
 Snake Game on pygame
 =====================
-pygame required
+Pygame required.
 Setting are not available now, sorry(
