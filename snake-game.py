@@ -4,8 +4,8 @@ import random
 import time
 
 
-WIN_WIDTH = 800
-WIN_HEIGHT = 600
+WIN_WIDTH = 400
+WIN_HEIGHT = 300
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -13,17 +13,18 @@ RED = (255, 0, 00)
 GREEN = (0, 255, 0)
 BROWN = (165, 42, 42)
 
-class Menu():
+
+class Menu:
     def __init__(self, screen):
         pygame.font.init()
         self.screen = screen
-        self.buttons = [(320, 240, 'Play', (11, 0, 77), (0, 255, 0), 0),
-                        (320, 280, 'Settings', (11, 0, 77), (0,255,0), 1),
-                        (320, 320, 'Exit', (11, 0, 77), (0, 255, 0), 2)]
+        self.buttons = [(WIN_WIDTH / 3, WIN_HEIGHT / 3 - 40, 'Play', (11, 0, 77), (0, 255, 0), 0),
+                        (WIN_WIDTH / 3, WIN_HEIGHT / 3, 'Settings', (11, 0, 77), (0,255,0), 1),
+                        (WIN_WIDTH / 3, WIN_HEIGHT / 3 + 40, 'Exit', (11, 0, 77), (0, 255, 0), 2)]
         #   coordinates (x, y)  , text,  (color1),     (color2), number
         self.menu()
 
-    #button animation
+    # button animation
     def render(self, screen, font, button_number):
         for i in self.buttons:
             if button_number == i[5]:
@@ -37,13 +38,13 @@ class Menu():
         pygame.key.set_repeat(0, 0)
         pygame.mouse.set_visible(True)
         button = 0
-        while  not start_game:
+        while not start_game:
             self.screen.fill((255, 255, 255))
             pygame.Surface((800, 30)).fill((100, 100, 200))
 
             mp = pygame.mouse.get_pos()
             for i in self.buttons:
-                if mp[0] > i[0] and mp[0] < i[0] + 155 and mp[1] > i[1] and mp[1] < i[1] + 50:
+                if i[0] < mp[0] < i[0] + 155 and i[1] < mp[1] < i[1] + 50:
                     button = i[5]
             self.render(self.screen, font_menu, button)
 
@@ -78,7 +79,8 @@ class Menu():
             self.screen.blit(self.screen, (0, 30))
             pygame.display.flip()
 
-class Game():
+
+class Game:
     def __init__(self, speed, play_surface):
         self.score = 0
         self.fps_controller = pygame.time.Clock()
@@ -94,11 +96,11 @@ class Game():
                     print("pause")
                     pause = True
                     while pause:
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
+                        for e in pygame.event.get():
+                            if e.type == pygame.QUIT:
                                 exit()
-                            elif event.type == pygame.KEYDOWN:
-                                if event.key == pygame.K_SPACE:
+                            elif e.type == pygame.KEYDOWN:
+                                if e.key == pygame.K_SPACE:
                                     print("continue")
                                     pause = False
                 elif event.key == pygame.K_ESCAPE:
@@ -129,15 +131,14 @@ class Game():
         go_font = pygame.font.SysFont('monaco', 72)
         go_surf = go_font.render('Game over', True, RED)
         go_rect = go_surf.get_rect()
-        go_rect.midtop = (360, 150)
+        go_rect.midtop = (WIN_WIDTH / 2, WIN_HEIGHT / 2)
         self.play_surface.blit(go_surf, go_rect)
         pygame.display.flip()
         time.sleep(2)
         return False
-        #pygame.quit()
-        #sys.exit()
 
-class Snake():
+
+class Snake:
     def __init__(self, color, play_surface):
         self.snake_body = [[100, 50], [90, 50], [80, 50]]
         # coordinates from head <-----------  to tail
@@ -146,28 +147,28 @@ class Snake():
         self.play_surface = play_surface
 
     def change_dir(self, turn):
-        if (turn == "RIGHT" and not self.direction == "LEFT"):
+        if turn == "RIGHT" and not self.direction == "LEFT":
             self.direction = turn
-        elif (turn == "LEFT" and not self.direction == "RIGHT"):
+        elif turn == "LEFT" and not self.direction == "RIGHT":
             self.direction = turn
-        elif (turn == "UP" and not self.direction == "DOWN"):
+        elif turn == "UP" and not self.direction == "DOWN":
             self.direction = turn
-        elif (turn == "DOWN" and not self.direction == "UP"):
+        elif turn == "DOWN" and not self.direction == "UP":
             self.direction = turn
 
     def move(self):
         dx = 10
         dy = 0
-        if (self.direction == "RIGHT"):
+        if self.direction == "RIGHT":
             dx = 10
             dy = 0
-        elif(self.direction == "LEFT"):
+        elif self.direction == "LEFT":
             dx = -10
             dy = 0
-        elif (self.direction == "UP"):
+        elif self.direction == "UP":
             dx = 0
             dy = -10
-        elif (self.direction == "DOWN"):
+        elif self.direction == "DOWN":
             dx = 0
             dy = 10
 
@@ -188,11 +189,11 @@ class Snake():
                              pygame.Rect(pos[0], pos[1], 10, 10))
 
     def collisions(self, food, fake_food, game):
-        if (self.snake_body[0] == food.position):
+        if self.snake_body[0] == food.position:
             self.grow()
             game.score += 1
             food.add(fake_food, self)
-            while (food.position in self.snake_body):
+            while food.position in self.snake_body:
                 food.position = [random.randrange(WIN_WIDTH / 10) * 10,
                                  random.randrange(WIN_HEIGHT / 10) * 10]
 
@@ -203,28 +204,29 @@ class Snake():
             return game.game_over()
 
         for i in range(1, len(self.snake_body)):
-            if (self.snake_body[0] == self.snake_body[i]):
+            if self.snake_body[0] == self.snake_body[i]:
                 return game.game_over()
 
-        for i in range(1, len(fake_food.position)):
-            if (self.snake_body[0] == fake_food.position[i]):
-                return game.game_over()
-
-        #generate fake_food:
+        # generate fake_food:
         wellnes = random.randrange(0, 100)
         if ((-80 < self.snake_body[0][0] - food.position[0] < 80) and
             (-80 < self.snake_body[0][1] - food.position[1] < 80) and
-            not (-4 < self.snake_body[0][0] - food.position[0] < 4) and
-            not (-4 < self.snake_body[0][1] - food.position[1] < 4) and
+            not (-20 < self.snake_body[0][0] - food.position[0] < 20) and
+            not (-20 < self.snake_body[0][1] - food.position[1] < 20) and
                 wellnes == 1 and game.score > 3):
             fake_food.position.append(food.position)
             food.add(fake_food, self)
+            print(fake_food.position)
+
+        for i in range(len(fake_food.position)):
+            if self.snake_body[0] == fake_food.position[i]:
+                return game.game_over()
 
         return True
 
 
-class Food():
-    def __init__(self, food_color, WIN_WIDHT, WIN_HEIGHT):
+class Food:
+    def __init__(self, food_color):
         self.color = food_color
         self.size_x = 10
         self.size_y = 10
@@ -233,18 +235,18 @@ class Food():
 
     def add(self, fake_food, snake):
         self.position = [random.randrange(WIN_WIDTH / 10) * 10,
-                      random.randrange(WIN_HEIGHT / 10) * 10]
+                         random.randrange(WIN_HEIGHT / 10) * 10]
         first = True
         second = True
-        while (first or second):
+        while first or second:
             first = False
-            for i in range (len(fake_food.position)):
+            for i in range(len(fake_food.position)):
                 if fake_food.position[i] == self.position:
                     first = True
                     self.position = [random.randrange(WIN_WIDTH / 10) * 10,
-                                  random.randrange(WIN_HEIGHT / 10) * 10]
+                                     random.randrange(WIN_HEIGHT / 10) * 10]
                     break
-            if first == False:
+            if not first:
                 second = False
                 for i in range(len(snake.snake_body)):
                     if snake.snake_body[i] == self.position:
@@ -258,7 +260,8 @@ class Food():
                 self.position[0], self.position[1],
                 self.size_x, self.size_y))
 
-class FakeFood():
+
+class FakeFood:
     def __init__(self, color):
         self.color = color
         self.position = []
@@ -271,6 +274,7 @@ class FakeFood():
                 ff_position[0], ff_position[1],
                 self.size_x, self.size_y))
 
+
 def main():
     while True:
         pygame.init()
@@ -281,7 +285,7 @@ def main():
         speed = 10
         game = Game(speed, play_surface)
         snake = Snake(GREEN, play_surface)
-        food = Food(RED, WIN_WIDTH, WIN_HEIGHT)
+        food = Food(RED)
         fake_food = FakeFood(BLACK)
 
         play = True
@@ -295,7 +299,6 @@ def main():
             fake_food.draw(play_surface)
 
             game.refresh()
-
 
 
 if __name__ == '__main__':
