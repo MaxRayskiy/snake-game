@@ -1,2 +1,3 @@
-# snake-game
-Snake game
+Snake Game on pygame
+=====================
+pygame required
