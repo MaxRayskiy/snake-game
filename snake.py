@@ -5,7 +5,7 @@ from setting import *
 
 class Snake:
     def __init__(self, color, play_surface):
-        self.snake_body = [[100, 50], [90, 50], [80, 50]]
+        self.snake_body = [[100, 50], [100 - PIXEL_SIZE, 50], [100 - 2 * PIXEL_SIZE, 50]]
         # coordinates from head <-----------  to tail
         self.direction = RIGHT
         self.color = color
@@ -22,20 +22,20 @@ class Snake:
             self.direction = turn
 
     def move(self):
-        dx = 10
+        dx = PIXEL_SIZE
         dy = 0
         if self.direction == RIGHT:
-            dx = 10
+            dx = PIXEL_SIZE
             dy = 0
         elif self.direction == LEFT:
-            dx = -10
+            dx = - PIXEL_SIZE
             dy = 0
         elif self.direction == UP:
             dx = 0
-            dy = -10
+            dy = - PIXEL_SIZE
         elif self.direction == DOWN:
             dx = 0
-            dy = 10
+            dy = PIXEL_SIZE
 
         self.snake_body.pop()
         self.snake_body.insert(0, [self.snake_body[0][0] + dx, self.snake_body[0][1] + dy])
@@ -51,7 +51,7 @@ class Snake:
         self.play_surface.fill(surface_color)
         for pos in self.snake_body:
             pygame.draw.rect(play_surface, self.color,
-                             pygame.Rect(pos[0], pos[1], 10, 10))
+                             pygame.Rect(pos[0], pos[1], PIXEL_SIZE, PIXEL_SIZE))
 
     def collisions(self, food, fake_food, game):
         if self.snake_body[0] == food.position:
