@@ -22,19 +22,20 @@ class Menu:
                 screen.blit(font.render(i[2], 1, i[3]), (i[0], i[1] - 30))
 
     def menu(self):
-        start_game = False
+        is_started = False
         font_menu = pygame.font.Font(None, 50)
         pygame.key.set_repeat(0, 0)
         pygame.mouse.set_visible(True)
         button = 0
-        while not start_game:
+        while not is_started:
             self.screen.fill(WHITE)
             pygame.Surface((800, 30)).fill((100, 100, 200))
 
-            mp = pygame.mouse.get_pos()
-            for i in self.buttons:
-                if i[0] < mp[0] < i[0] + 155 and i[1] < mp[1] < i[1] + 50:
-                    button = i[5]
+            mouse_pos = pygame.mouse.get_pos()
+            for button in self.buttons:
+                # if (mouse_x_coord in button_x_coord)        and (mouse_y_coord in button_y_coord):
+                if button[0] < mouse_pos[0] < button[0] + 155 and button[1] < mouse_pos[1] < button[1] + 50:
+                    button = button[5]
             self.render(self.screen, font_menu, button)
 
             for event in pygame.event.get():
@@ -52,15 +53,15 @@ class Menu:
                             button += 1
                     elif event.key == pygame.K_RETURN:
                         if button == 0:
-                            start_game = True
-                        if button == 1:
+                            is_started = True
+                        elif button == 1:
                             pass
-                        if button == 2:
+                        elif button == 2:
                             exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if button == 0:
-                        start_game = True
+                        is_started = True
                     elif button == 2:
                         pygame.quit()
                         sys.exit()

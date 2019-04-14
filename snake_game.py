@@ -1,8 +1,8 @@
 from menu import *
 from game import *
 from snake import *
-from Food import *
-from FakeFood import *
+from food import *
+from fake_food import *
 
 
 def main():

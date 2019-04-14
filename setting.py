@@ -8,6 +8,9 @@ RED = (255, 0, 00)
 GREEN = (0, 255, 0)
 BROWN = (165, 42, 42)
 
+FREESANS = 'freesans'
+MONACO ='monaco'
+
 GAME_SPEED = 10
 
 RIGHT = "RIGHT"
