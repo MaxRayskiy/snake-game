@@ -1,3 +1,5 @@
+import pygame
+
 WIN_WIDTH = 400
 WIN_HEIGHT = 300
 PIXEL_SIZE = 10
@@ -17,6 +19,15 @@ RIGHT = "RIGHT"
 LEFT = "LEFT"
 UP = "UP"
 DOWN = "DOWN"
+
+turn_dict = {pygame.K_RIGHT: RIGHT,
+             pygame.K_LEFT: LEFT,
+             pygame.K_UP: UP,
+             pygame.K_DOWN: DOWN,
+             pygame.K_d: RIGHT,
+             pygame.K_a: LEFT,
+             pygame.K_w: UP,
+             pygame.K_s: DOWN}
 
 FAKE_FOOD_MAX_DIST = 80
 FAKE_FOOD_MIN_DIST = 20

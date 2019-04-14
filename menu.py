@@ -1,4 +1,3 @@
-import pygame
 import sys
 from setting import *
 
@@ -32,10 +31,10 @@ class Menu:
             pygame.Surface((800, 30)).fill((100, 100, 200))
 
             mouse_pos = pygame.mouse.get_pos()
-            for button in self.buttons:
-                # if (mouse_x_coord in button_x_coord)        and (mouse_y_coord in button_y_coord):
-                if button[0] < mouse_pos[0] < button[0] + 155 and button[1] < mouse_pos[1] < button[1] + 50:
-                    button = button[5]
+            for parameter in self.buttons:
+                # if (mouse_x_coord in button_x_coord)              and (mouse_y_coord in button_y_coord):
+                if parameter[0] < mouse_pos[0] < parameter[0] + 155 and parameter[1] < mouse_pos[1] < parameter[1] + 50:
+                    button = parameter[5]
             self.render(self.screen, font_menu, button)
 
             for event in pygame.event.get():

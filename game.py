@@ -1,4 +1,3 @@
-import pygame
 import sys
 import time
 from setting import *
@@ -31,14 +30,12 @@ class Game:
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                elif event.key == pygame.K_LEFT:
-                    turn = LEFT
-                elif event.key == pygame.K_RIGHT:
-                    turn = RIGHT
-                elif event.key == pygame.K_UP:
-                    turn = UP
-                elif event.key == pygame.K_DOWN:
-                    turn = DOWN
+
+                try:
+                    turn = turn_dict[event.key]
+                except KeyError:
+                    pass
+
         return turn
 
     def refresh(self):
